@@ -1,44 +1,74 @@
+var charString = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklnmopqrstuvwxyz", "0123456789", 
+ "~!@#$%^&*()-_=+"];
 
-// Get references to the #generate element
+var userInput = "";
+
+var password = "";
+
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
+function writePassword() {
+  var passwordText = document.querySelector("#password");
+  password = generatePassword();
+  passwordText.value = ''; 
+  passwordText.value = password;
+}
+
+// Character length prompt
 function generatePassword() {
-  var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890~!@#$%^&*()-+"
-  var passwordLength = 8;
+  var characterLength = 0
+  while ((characterLength < 8 || characterLength > 128) || Number.isInteger(characterLength) === 
+false) {
+  characterLength = parseInt(prompt(`Password must be between 8 and 128 characters. Please pick a number between 8 
+    128`));
+      }
+
+  var upper = false
+  var lower = false
+  var number = false
+  var symbol = false
+
+  while (true) {
+   
+    //prompt for uppercase
+    upper = confirm("Confirm uppercase characters");
+
+    //prompt for lowercase
+    lower = confirm("Confirm lowercase characters");
+
+    //prompt for numbers
+    number = confirm("Confirm numeric characters");
+
+    //prompt for special characters
+    symbol = confirm("Confirm special characters");
+
+    break;
+  }
+
+  console.log('Using upper', upper);
+  console.log('Using lower', lower);
+  console.log('Using number', number);
+  console.log('Using symbol', symbol);
+
+  upper && (userInput += charString[0])
+
+  lower && (userInput += charString[1])
+
+  number && (userInput += charString[2])
+
+  symbol && (userInput += charString[3])
+
   var password = "";
 
-  for (var i = 0; i <= passwordLength; i++){
-    var randomNumber = Math.floor(Math.random()
-    * chars.length);
-    password += chars.substring(randomNumber, randomNumber +1);
+  for (var i = 0; i < characterLength; i++) {
+    var index = Math.floor(Math.random() * userInput.length);
+    password += userInput[index]
   }
 
-  document.getElementById("password").value = password;
-
-  var upperConfirm = window.confirm ("Would you like to include uppercase characters in your password?");
-    console.log(upperConfirm);
-
-  var lowerConfirm = window.confirm ("Would you like to include lowercase characters in your password?");
-    console.log(lowerConfirm);
-
-  var numericConfirm = window.confirm ("Would you like to include numbers in your password?");
-    console.log(numericConfirm);
-
-  var specialConfirm = window.confirm ("Would you like to include special characters in your password?");
-    console.log(specialConfirm);
-
-  if(passwordLength < "128" || passwordLength > "8" || passwordLength === "" || passwordLength === null) {
-    window.alert("Passwords must be at least 8 characters and no more than 128 chracters. Please use a valid entry.");
-    return generatePassword ();
-  }
-
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
+  return password
 
 }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", generatePassword);
+generateBtn.addEventListener("click", writePassword);
